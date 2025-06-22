@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gamer's Ultimate AutoClicker</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script defer src="assets/main.js"></script>
+</head>
+<body>
+  <div id="loading-screen">
+    <h1>Loading your download...</h1>
+    <p>Skip in <span id="countdown">6</span> seconds</p>
+    <button id="skip-button" disabled>Skip</button>
+  </div>
+
+  <div id="main-content" style="display:none;">
+    <div class="ads-placeholder">[ Ad Placeholder 1 ]</div>
+    <div class="fake-downloads">
+      <button class="fake-download">Download Now</button>
+      <button class="fake-download">Fast Install</button>
+    </div>
+
+    <div class="ads-placeholder">[ Ad Placeholder 2 ]</div>
+
+    <section class="download-section">
+      <h2>Get AutoClicker for Mac</h2>
+      <a class="real-download animated" href="downloads/AutoClicker_Mac.zip" download>Download Mac Version</a>
+    </section>
+
+    <section class="download-section">
+      <h2>Get AutoClicker for Windows</h2>
+      <a class="real-download animated" href="downloads/AutoClicker_Windows.zip" download>Download Windows Version</a>
+    </section>
+  </div>
+
+  <div id="chatbot">
+    <div id="chat-header">Echo (click to minimize)</div>
+    <div id="chat-body">
+      <div id="chat-log"></div>
+      <input type="text" id="user-input" placeholder="Ask Echo about the app..." />
+    </div>
+  </div>
+</body>
+</html>
