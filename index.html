@@ -1,11 +1,148 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>✅ Test Page</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Echo AutoClicker</title>
+  <style>
+    body {
+      margin: 0;
+      background: #0a0a0a;
+      font-family: 'Orbitron', sans-serif;
+      color: #00f0ff;
+      overflow-x: hidden;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 60px;
+      font-size: 2.5rem;
+    }
+    .download-section {
+      margin: 1000px auto 100px;
+      text-align: center;
+    }
+    .download-btn {
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      border: 2px solid #00f0ff;
+      background: transparent;
+      color: #00f0ff;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      animation: pulse 1.5s infinite;
+    }
+    .download-btn:hover {
+      background: #00f0ff;
+      color: #0a0a0a;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0px #00f0ff; }
+      50% { box-shadow: 0 0 15px #00f0ff; }
+      100% { box-shadow: 0 0 0px #00f0ff; }
+    }
+    #echo-box {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #111;
+      border: 2px solid #00f0ff;
+      border-radius: 12px;
+      width: 320px;
+      height: 400px;
+      display: flex;
+      flex-direction: column;
+      z-index: 9999;
+      font-size: 14px;
+    }
+    #echo-header {
+      background: #00f0ff;
+      color: #0a0a0a;
+      padding: 10px;
+      cursor: move;
+      font-weight: bold;
+    }
+    #echo-messages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+    }
+    #echo-input {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #00f0ff;
+    }
+    #echo-input input {
+      flex: 1;
+      padding: 5px;
+      background: #000;
+      color: #00f0ff;
+      border: 1px solid #00f0ff;
+      border-radius: 6px;
+    }
+    #echo-input button {
+      background: #00f0ff;
+      border: none;
+      margin-left: 5px;
+      padding: 5px 10px;
+      color: #000;
+      border-radius: 6px;
+    }
+  </style>
 </head>
 <body>
-  <h1 style="color: green;">Hello, GitHub Pages is working!</h1>
-  <p>Your site root is loading correctly.</p>
+  <h1>Echo AutoClicker</h1>
+  <div class="download-section">
+    <p>Choose your download:</p>
+    <button class="download-btn" onclick="window.open('init.lua', '_blank')">Download for Mac</button>
+    <br/><br/>
+    <button class="download-btn" onclick="window.open('AutoClicker_Windows.py', '_blank')">Download for Windows</button>
+  </div>
+
+  <div id="echo-box">
+    <div id="echo-header">Echo (Ask me anything about the app!)</div>
+    <div id="echo-messages"></div>
+    <div id="echo-input">
+      <input type="text" id="echo-user-input" placeholder="Ask a question..." />
+      <button onclick="handleEcho()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const messages = document.getElementById('echo-messages');
+    const userInput = document.getElementById('echo-user-input');
+
+    function typeResponse(text) {
+      const typing = document.createElement('div');
+      typing.textContent = 'Echo is typing...';
+      messages.appendChild(typing);
+      setTimeout(() => {
+        typing.textContent = text;
+      }, 800);
+    }
+
+    function handleEcho() {
+      const value = userInput.value.toLowerCase();
+      const userMsg = document.createElement('div');
+      userMsg.textContent = "You: " + userInput.value;
+      messages.appendChild(userMsg);
+      userInput.value = "";
+
+      if (value.includes("mac")) {
+        typeResponse("Yes! The Mac version uses Hammerspoon and works great.");
+      } else if (value.includes("windows")) {
+        typeResponse("Absolutely! The Windows version is built in Python and super fast.");
+      } else if (value.includes("io")) {
+        typeResponse("Yes, it's optimized for io games like Zombs.io!");
+      } else if (value.includes("safe") || value.includes("virus")) {
+        typeResponse("Yes! It’s 100% safe. We even include a README file.");
+      } else {
+        typeResponse("Hmm... I'm not sure! Try asking about what the app does.");
+      }
+
+      messages.scrollTop = messages.scrollHeight;
+    }
+  </script>
 </body>
 </html>
