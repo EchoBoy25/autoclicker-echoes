@@ -18,6 +18,14 @@
       margin-top: 60px;
       font-size: 2.5rem;
     }
+    .ad-zone {
+      background: #111;
+      border: 2px dashed #00f0ff;
+      margin: 40px auto;
+      padding: 20px;
+      width: 80%;
+      text-align: center;
+    }
     .download-section {
       margin: 1000px auto 100px;
       text-align: center;
@@ -37,11 +45,38 @@
       background: #00f0ff;
       color: #0a0a0a;
     }
+    .fake-download {
+      display: inline-block;
+      margin: 10px;
+      padding: 10px 20px;
+      background: #222;
+      border: 2px solid #00f0ff;
+      border-radius: 8px;
+      color: #00f0ff;
+      cursor: not-allowed;
+    }
     @keyframes pulse {
       0% { box-shadow: 0 0 0px #00f0ff; }
       50% { box-shadow: 0 0 15px #00f0ff; }
       100% { box-shadow: 0 0 0px #00f0ff; }
     }
+
+    /* Loading screen styles */
+    #loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      color: #00f0ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 99999;
+    }
+
     #echo-box {
       position: fixed;
       bottom: 30px;
@@ -92,7 +127,19 @@
   </style>
 </head>
 <body>
+  <div id="loading-screen">
+    <h1>Loading Echo AutoClicker...</h1>
+    <p>Please wait <span id="countdown">6</span> seconds</p>
+    <button id="skipBtn" disabled>Skip</button>
+  </div>
+
   <h1>Echo AutoClicker</h1>
+
+  <div class="ad-zone">[Insert Ad Here]</div>
+  <div class="fake-download">Download Now</div>
+  <div class="fake-download">Fast Download</div>
+  <div class="fake-download">Access Key Generator</div>
+
   <div class="download-section">
     <p>Choose your download:</p>
     <button class="download-btn" onclick="window.open('init.lua', '_blank')">Download for Mac</button>
@@ -110,6 +157,26 @@
   </div>
 
   <script>
+    // Loading screen logic
+    let seconds = 6;
+    const countdown = document.getElementById("countdown");
+    const skipBtn = document.getElementById("skipBtn");
+
+    const interval = setInterval(() => {
+      seconds--;
+      countdown.textContent = seconds;
+      if (seconds <= 0) {
+        clearInterval(interval);
+        skipBtn.disabled = false;
+        skipBtn.textContent = "Enter";
+      }
+    }, 1000);
+
+    skipBtn.addEventListener("click", () => {
+      document.getElementById("loading-screen").style.display = "none";
+    });
+
+    // Echo chat
     const messages = document.getElementById('echo-messages');
     const userInput = document.getElementById('echo-user-input');
 
