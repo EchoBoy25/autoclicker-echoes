@@ -1,37 +1,164 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ultimate Auto Clicker Suite</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Orbitron', sans-serif;
-      background-color: #0d0d0d;
-      color: #e0f7ff;
       margin: 0;
-      padding: 2rem;
+      font-family: 'Orbitron', sans-serif;
+      background: #0f0f0f;
+      color: #d0f0ff;
     }
-    .download-btn {
-      background-color: #00f0ff;
-      padding: 1rem 2rem;
+    #loading-screen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #000;
+      color: #00f0ff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 999999;
+      font-size: 24px;
+    }
+    #skip-btn {
+      background-color: #00bfff;
+      color: white;
       border: none;
+      padding: 12px 24px;
+      margin-top: 20px;
       border-radius: 10px;
-      font-size: 1.5rem;
-      animation: pulse 1.5s infinite;
-    }
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
+      font-size: 18px;
+      cursor: not-allowed;
     }
   </style>
 </head>
 <body>
-  <h1>🔥 Ultimate Auto Clicker Suite 🔥</h1>
-  <p>Now with Echo AI helper, fake download counter, and ad-ready zones!</p>
-  <button class="download-btn">Download for Mac</button>
-  <button class="download-btn">Download for Windows</button>
+  <div id="loading-screen">
+    <div>Loading the Ultimate Auto Clicker...</div>
+    <button id="skip-btn">Skip in 6</button>
+  </div>
+  <script>
+    let seconds = 6;
+    const skipBtn = document.getElementById("skip-btn");
+    const loader = document.getElementById("loading-screen");
+
+    const countdown = setInterval(() => {
+      seconds--;
+      skipBtn.textContent = "Skip in " + seconds;
+      if (seconds === 0) {
+        clearInterval(countdown);
+        skipBtn.textContent = "Enter";
+        skipBtn.disabled = false;
+        skipBtn.style.cursor = "pointer";
+        skipBtn.onclick = () => {
+          loader.remove();
+          document.getElementById("main-site").style.display = "block";
+        };
+      }
+    }, 1000);
+  </script>
+  <div id="main-site" style="display:none;">
+
+  <div class="center">
+    <h1>🔥 Ultimate Auto Clicker Suite 🔥</h1>
+    <p class="counter">Total Downloads: <span id="downloadCount">728</span></p>
+    <button class="download-button" onclick="downloadFile('mac')">Download for Mac</button>
+    <button class="download-button" onclick="downloadFile('windows')">Download for Windows</button>
+  </div>
+
+  <div class="ad-zone">Insert Ad Here</div>
+  <div class="ad-zone">Insert Ad Here</div>
+
+  <div class="survey">
+    <p><strong>Where did you hear about this auto-clicker?</strong></p>
+    <form id="sourceSurvey">
+      <input type="radio" name="source" value="YouTube"> YouTube<br>
+      <input type="radio" name="source" value="TikTok"> TikTok<br>
+      <input type="radio" name="source" value="Discord"> Discord<br>
+      <input type="radio" name="source" value="Reddit"> Reddit<br>
+      <input type="radio" name="source" value="Friend"> Friend<br>
+      <input type="radio" name="source" value="Other"> Other <input type="text" name="otherDetail" placeholder="(optional)">
+    </form>
+  </div>
+
+  <div class="floating-download">
+    <button class="download-button" onclick="scrollToBottom()">⬇ Get It Now</button>
+  </div>
+
+  <div class="chatbot" id="chatbot">
+    <div class="chat-header" onmousedown="startDrag(event)">Echo (click and drag)</div>
+    <div id="chat-log">Hi! I'm Echo. Ask me anything about this app!</div>
+    <input type="text" class="chat-input" id="chat-input" placeholder="Type your question...">
+  </div>
+
+  <script>
+    function downloadFile(type) {
+      let link = document.createElement('a');
+      link.href = type === 'mac' ? 'init.lua' : 'AutoClicker_Windows.py';
+      link.download = type === 'mac' ? 'init.lua' : 'AutoClicker_Windows.py';
+      link.click();
+      let count = document.getElementById('downloadCount');
+      count.textContent = parseInt(count.textContent) + Math.floor(Math.random() * 3 + 1);
+    }
+
+    function scrollToBottom() {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    const input = document.getElementById('chat-input');
+    const log = document.getElementById('chat-log');
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        const msg = input.value.trim();
+        log.innerHTML += `<div><strong>You:</strong> ${msg}</div>`;
+        input.value = '';
+        setTimeout(() => {
+          log.innerHTML += `<div><strong>Echo:</strong> ${getEchoReply(msg.toLowerCase())}</div>`;
+        }, 600);
+      }
+    });
+
+    function getEchoReply(msg) {
+      if (msg.includes('safe')) return "Totally! The scripts are clean and open-source.";
+      if (msg.includes('how')) return "Just download and follow the README. It's easy!";
+      if (msg.includes('mac')) return "Mac version uses Hammerspoon and works great!";
+      if (msg.includes('windows')) return "Run the Python script using any terminal with Python 3+.";
+      if (msg.includes('games') || msg.includes('io')) return "Yes! It supports .io games, especially resource clickers.";
+      return "I'm not sure, but I'm always learning!";
+    }
+
+    let chatbot = document.getElementById('chatbot');
+    let isDragging = false, offsetX, offsetY;
+
+    function startDrag(e) {
+      isDragging = true;
+      offsetX = e.clientX - chatbot.offsetLeft;
+      offsetY = e.clientY - chatbot.offsetTop;
+      document.addEventListener('mousemove', drag);
+      document.addEventListener('mouseup', stopDrag);
+    }
+
+    function drag(e) {
+      if (isDragging) {
+        chatbot.style.left = e.clientX - offsetX + 'px';
+        chatbot.style.top = e.clientY - offsetY + 'px';
+      }
+    }
+
+    function stopDrag() {
+      isDragging = false;
+      document.removeEventListener('mousemove', drag);
+      document.removeEventListener('mouseup', stopDrag);
+    }
+  </script>
+
+</html>
+
+  </div>
 </body>
 </html>
